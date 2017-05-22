@@ -63,6 +63,12 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'cards' => [
+            'driver' => 'local',
+            'root' => public_path('pictures'.DIRECTORY_SEPARATOR.'cards'.DIRECTORY_SEPARATOR),
+            'visibility' => 'public'
+        ],
+
     ],
 
 ];

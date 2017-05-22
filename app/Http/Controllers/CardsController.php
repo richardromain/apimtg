@@ -48,7 +48,8 @@ class CardsController extends Controller
      */
     public function show($id)
     {
-        //
+        $card = Card::findOrFail($id);
+        return view('cards.show', compact('card'));
     }
 
     /**
@@ -82,6 +83,9 @@ class CardsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $card = Card::findOrFail($id);
+        $card->trash();
+
+        return redirect(route('cards.index'));
     }
 }

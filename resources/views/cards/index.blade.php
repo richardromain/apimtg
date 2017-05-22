@@ -23,9 +23,20 @@
                                             Action <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">Voir</a></li>
+                                            <li><a href="{{ route('cards.show', $card) }}">Voir</a></li>
                                             <li><a href="#">Modifier</a></li>
-                                            <li><a href="#">Supprimer</a></li>
+                                            <li>
+                                                <a href="{{ route('cards.destroy', $card) }}"
+                                                   onclick="event.preventDefault();
+                                                     document.getElementById('delete-form').submit();">
+                                                    Supprimer
+                                                </a>
+
+                                                <form id="delete-form" action="{{ route('cards.destroy', $card) }}" method="POST" style="display: none;">
+                                                    {{ csrf_field() }}
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>

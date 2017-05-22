@@ -19,4 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('cards', 'CardsController');
+Route::group(['middleware' => 'auth'], function (){
+    Route::resource('cards', 'CardsController');
+});

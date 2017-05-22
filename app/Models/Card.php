@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Storage;
+use DB;
+use Exception;
 
 class Card extends Model
 {
@@ -16,13 +19,37 @@ class Card extends Model
 
     public static function add($request)
     {
-        $card = Card::create([
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-            'cost' => $request->input('cost'),
-            'picture' => str_slug($request->input('name')).'.'.$request->file('picture')->getClientOriginalExtension()
-        ]);
+        DB::beginTransaction();
+        try {
+            $card = Card::create([
+                'name' => $request->input('name'),
+                'content' => $request->input('content'),
+                'cost' => $request->input('cost'),
+                'picture' => str_slug($request->input('name')).'.'.$request->file('picture')->getClientOriginalExtension()
+            ]);
+            $cards_storage = Storage::disk('cards');
+            $request->file('picture')->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
+        } catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
+        DB::commit();
+        return true;
 
-        $request->file('picture')->move(base_path().'/public/pictures/cards/', $card->picture);
+    }
+
+    public function trash()
+    {
+        DB::beginTransaction();
+        try {
+            $this->delete();
+            $cards_storage = Storage::disk('cards');
+            $cards_storage->deleteDirectory($this->id);
+        } catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
+        DB::commit();
+        return true;
     }
 }
