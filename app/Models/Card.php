@@ -17,6 +17,11 @@ class Card extends Model
         'created_at', 'updated_at'
     ];
 
+    public function types()
+    {
+        return $this->belongsToMany('App\Models\Type');
+    }
+
     public static function add($request)
     {
         DB::beginTransaction();
@@ -27,6 +32,7 @@ class Card extends Model
                 'cost' => $request->input('cost'),
                 'picture' => str_slug($request->input('name')).'.'.$request->file('picture')->getClientOriginalExtension()
             ]);
+            $card->types()->attach($request->input('types'));
             $cards_storage = Storage::disk('cards');
             $request->file('picture')->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
         } catch (Exception $e) {

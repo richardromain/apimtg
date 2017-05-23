@@ -22,7 +22,7 @@ class TypesTableSeeder extends Seeder
             'name' => 'Rituel',
         ]);
         Type::create([
-            'name' => 'Enchentement',
+            'name' => 'Enchantement',
         ]);
         Type::create([
             'name' => 'Planeswalker',

@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@push('stylesheets')
+    <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('select2-bootstrap-theme/select2-bootstrap.min.css') }}">
+@endpush
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -66,6 +71,24 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('types') ? ' has-error' : '' }}">
+                                <label for="types" class="col-md-4 control-label">Types</label>
+
+                                <div class="col-md-6">
+                                    <select class="types form-control" id="types" multiple="multiple" name="types[]">
+                                        @foreach($types as $type)
+                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @if ($errors->has('types'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('types') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
@@ -80,3 +103,12 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('select2/js/select2.js') }}"></script>
+    <script type="application/javascript">
+        $(".types").select2({
+            theme: "bootstrap"
+        });
+    </script>
+@endpush
