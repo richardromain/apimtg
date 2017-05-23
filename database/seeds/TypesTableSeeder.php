@@ -28,7 +28,7 @@ class TypesTableSeeder extends Seeder
             'name' => 'Planeswalker',
         ]);
         Type::create([
-            'name' => 'Creature',
+            'name' => 'Créature',
         ]);
     }
 }

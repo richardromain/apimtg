@@ -35,6 +35,7 @@ class CreateTypesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('card_type');
         Schema::dropIfExists('types');
     }
 }
