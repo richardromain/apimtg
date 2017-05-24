@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Card;
+use App\Models\Color;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,8 @@ class CardsController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('cards.create', compact('types'));
+        $colors = Color::all();
+        return view('cards.create', compact('types', 'colors'));
     }
 
     /**

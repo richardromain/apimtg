@@ -89,6 +89,24 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('colors') ? ' has-error' : '' }}">
+                                <label for="colors" class="col-md-4 control-label">Couleurs</label>
+
+                                <div class="col-md-6">
+                                    <select class="colors form-control" id="colors" multiple="multiple" name="colors[]">
+                                        @foreach($colors as $color)
+                                            <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @if ($errors->has('colors'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('colors') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
@@ -108,6 +126,9 @@
     <script src="{{ asset('select2/js/select2.js') }}"></script>
     <script type="application/javascript">
         $(".types").select2({
+            theme: "bootstrap"
+        });
+        $(".colors").select2({
             theme: "bootstrap"
         });
     </script>
