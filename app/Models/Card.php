@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Storage;
 use DB;
 use Exception;
+use Image;
 
 class Card extends Model
 {
@@ -31,16 +32,27 @@ class Card extends Model
     {
         DB::beginTransaction();
         try {
-            $card = Card::create([
-                'name' => $request->input('name'),
-                'content' => $request->input('content'),
-                'cost' => $request->input('cost'),
-                'picture' => str_slug($request->input('name')).'.'.$request->file('picture')->getClientOriginalExtension()
-            ]);
-            $card->types()->attach($request->input('types'));
             $cards_storage = Storage::disk('cards');
-            $request->file('picture')->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
+            if ($request->hasFile('picture')) {
+                $card = Card::create([
+                    'name' => $request->input('name'),
+                    'content' => $request->input('content'),
+                    'cost' => $request->input('cost'),
+                    'picture' => str_slug($request->input('name')).'.'.$request->file('picture')->getClientOriginalExtension()
+                ]);
+                $request->file('picture')->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
+            } else {
+                $card = Card::create([
+                    'name' => $request->input('name'),
+                    'picture' => str_slug($request->input('name')).'.png'
+                ]);
+                $cards_storage->makeDirectory($card->id);
+                Image::make($request->input('urlPicture'))->save($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id.DIRECTORY_SEPARATOR.$card->picture);
+            }
+            $card->types()->attach($request->input('types'));
+            $card->colors()->attach($request->input('colors'));
         } catch (Exception $e) {
+            dd($e);
             DB::rollback();
             return false;
         }
