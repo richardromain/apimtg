@@ -13,19 +13,19 @@ class ColorsTableSeeder extends Seeder
     public function run()
     {
         Color::create([
-            'name' => 'Red',
+            'name' => 'Rouge',
         ]);
         Color::create([
-            'name' => 'White',
+            'name' => 'Blanc',
         ]);
         Color::create([
-            'name' => 'Blue',
+            'name' => 'Bleu',
         ]);
         Color::create([
-            'name' => 'Black',
+            'name' => 'Noir',
         ]);
         Color::create([
-            'name' => 'Green',
+            'name' => 'Vert',
         ]);
     }
 }
