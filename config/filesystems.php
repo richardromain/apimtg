@@ -66,7 +66,8 @@ return [
         'cards' => [
             'driver' => 'local',
             'root' => public_path('pictures'.DIRECTORY_SEPARATOR.'cards'.DIRECTORY_SEPARATOR),
-            'visibility' => 'public'
+            'visibility' => 'public',
+            'url' => env('APP_URL').'/pictures/cards/',
         ],
 
     ],

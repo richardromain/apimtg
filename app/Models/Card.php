@@ -14,9 +14,18 @@ class Card extends Model
         'name', 'content', 'cost', 'picture'
     ];
 
+    protected $appends = [
+        'url_picture'
+    ];
+
     protected $dates = [
         'created_at', 'updated_at'
     ];
+
+    public function getUrlPictureAttribute()
+    {
+        return Storage::disk('cards')->url($this->id.'/'.$this->picture);
+    }
 
     public function types()
     {
@@ -74,5 +83,11 @@ class Card extends Model
         }
         DB::commit();
         return true;
+    }
+
+    public static function search($name)
+    {
+        $card = Card::where('name', $name)->first();
+        return $card;
     }
 }

@@ -27,9 +27,15 @@ class CardsController extends Controller
     public function store(Request $request)
     {
         if (Card::add($request)) {
-            return 'ok';
+            return response()->json([
+                'success' => true,
+                'message' => 'La carte a bien été enregistrée'
+            ], 200);
         } else {
-            return 'ko';
+            return response()->json([
+                'success' => false,
+                'message' => 'La carte n\'a pas été enregistrée'
+            ], 500);
         }
     }
 
@@ -76,5 +82,21 @@ class CardsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $card = Card::search($request->input('name'));
+        if ($card) {
+            return response()->json([
+                'success' => true,
+                'data' => $card
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cette carte n\'existe pas'
+            ], 404);
+        }
     }
 }

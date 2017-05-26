@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('cards', 'Api\CardsController');
+Route::post('cards/search', 'Api\CardsController@search');
