@@ -26,7 +26,7 @@ class CardsController extends Controller
      */
     public function store(Request $request)
     {
-        if (Card::add($request)) {
+        if (Card::add($request->input('name'), $request->input('urlPicture'), $request->input('content'), $request->input('cost'))) {
             return response()->json([
                 'success' => true,
                 'message' => 'La carte a bien été enregistrée'

@@ -40,7 +40,7 @@ class CardsController extends Controller
      */
     public function store(Request $request)
     {
-        Card::add($request);
+        Card::add($request->input('name'), $request->file('picture'), $request->input('content'), $request->input('cost'), $request->input('types'), $request->input('colors'));
         return redirect(route('cards.index'));
     }
 

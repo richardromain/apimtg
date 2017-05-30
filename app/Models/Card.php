@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Storage;
 use DB;
 use Exception;
@@ -37,31 +38,30 @@ class Card extends Model
         return $this->belongsToMany('App\Models\Color');
     }
 
-    public static function add($request)
+    public static function add($name, $picture, $content = null, $cost = null, $types = null, $colors = null)
     {
         DB::beginTransaction();
         try {
             $cards_storage = Storage::disk('cards');
-            if ($request->hasFile('picture')) {
+            if($picture instanceof UploadedFile) {
                 $card = Card::create([
-                    'name' => $request->input('name'),
-                    'content' => $request->input('content'),
-                    'cost' => $request->input('cost'),
-                    'picture' => str_slug($request->input('name')).'.'.$request->file('picture')->getClientOriginalExtension()
+                    'name' => $name,
+                    'content' => $content,
+                    'cost' => $cost,
+                    'picture' => str_slug($name).'.'.$picture->getClientOriginalExtension()
                 ]);
-                $request->file('picture')->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
+                $picture->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
             } else {
                 $card = Card::create([
-                    'name' => $request->input('name'),
-                    'picture' => str_slug($request->input('name')).'.png'
+                    'name' => $name,
+                    'picture' => str_slug($name).'.png'
                 ]);
                 $cards_storage->makeDirectory($card->id);
-                Image::make($request->input('urlPicture'))->save($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id.DIRECTORY_SEPARATOR.$card->picture);
+                Image::make($picture)->save($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id.DIRECTORY_SEPARATOR.$card->picture);
             }
-            $card->types()->attach($request->input('types'));
-            $card->colors()->attach($request->input('colors'));
+            $card->types()->attach($types);
+            $card->colors()->attach($colors);
         } catch (Exception $e) {
-            dd($e);
             DB::rollback();
             return false;
         }
