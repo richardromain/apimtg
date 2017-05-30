@@ -38,6 +38,11 @@ class Card extends Model
         return $this->belongsToMany('App\Models\Color');
     }
 
+    public function set()
+    {
+        return $this->belongsTo('App\Models\Set');
+    }
+
     public static function add($name, $picture, $content = null, $cost = null, $types = null, $colors = null)
     {
         DB::beginTransaction();
