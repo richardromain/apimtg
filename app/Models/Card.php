@@ -87,7 +87,7 @@ class Card extends Model
 
     public static function search($name)
     {
-        $card = Card::where('name', $name)->first();
+        $card = Card::where('name', ucfirst($name))->first();
         return $card;
     }
 }
