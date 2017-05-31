@@ -21,5 +21,10 @@ class SetsTableSeeder extends Seeder
             'name' => 'Révolte éthérique',
             'url_cards' => 'http://magic.wizards.com/fr/products/aether-revolt-cards'
         ]);
+
+        Set::create([
+            'name' => 'Kaladesh',
+            'url_cards' => 'http://magic.wizards.com/fr/content/kaladesh-cards'
+        ]);
     }
 }
