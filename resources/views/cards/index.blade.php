@@ -9,14 +9,14 @@
                         <tr>
                             <th>#</th>
                             <th>Nom</th>
-                            <th>Coût</th>
+                            <th>Extension</th>
                             <th>Actions</th>
                         </tr>
                         @foreach($cards as $card)
                             <tr>
                                 <td>{{ $card->id }}</td>
                                 <td>{{ $card->name }}</td>
-                                <td>{{ $card->cost }}</td>
+                                <td>{{ $card->set->name }}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
