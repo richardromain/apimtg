@@ -8,6 +8,7 @@ use Storage;
 use DB;
 use Exception;
 use Image;
+use Log;
 
 class Card extends Model
 {
@@ -69,6 +70,7 @@ class Card extends Model
             $card->types()->attach($types);
             $card->colors()->attach($colors);
         } catch (Exception $e) {
+            Log::info($e->getMessage());
             DB::rollback();
             return false;
         }
