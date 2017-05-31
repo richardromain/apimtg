@@ -24,7 +24,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a href="{{ route('cards.show', $card) }}">Voir</a></li>
-                                            <li><a href="#">Modifier</a></li>
+                                            <li><a href="{{ route('cards.edit', $card) }}">Modifier</a></li>
                                             <li>
                                                 <a href="{{ route('cards.destroy', $card) }}"
                                                    onclick="event.preventDefault();

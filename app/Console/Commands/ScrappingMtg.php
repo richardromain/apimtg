@@ -21,7 +21,7 @@ class ScrappingMtg extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'This command scrap the magic the gathering website';
 
     /**
      * Create a new command instance.
@@ -39,14 +39,14 @@ class ScrappingMtg extends Command
      */
     public function handle()
     {
-        //$set_name = $this->choice('Choice your set?', $this->getCollectionOfSets());
-        //$set = Set::where('name', $set_name)->first();
+        $set_name = $this->choice('Choice your set?', $this->getCollectionOfSets());
+        $set = Set::where('name', $set_name)->first();
         $client = new Client();
-        $crawler = $client->request('GET', 'http://magic.wizards.com/fr/products/amonkhet/cards');
+        $crawler = $client->request('GET', $set->url_cards);
         $bar = $this->output->createProgressBar($crawler->filter('.resizing-cig')->count());
-        $this->info('Downloading all cards');
-        $crawler->filter('.resizing-cig')->each(function ($node) use ($bar){
-            Card::add($node->text(), $node->children()->children()->image()->getUri());
+        $this->info('Downloading all cards of '.$set->name);
+        $crawler->filter('.resizing-cig')->each(function ($node) use ($bar, $set){
+            Card::add($node->text(), $node->children()->children()->image()->getUri(), $set->id);
             $bar->advance();
         });
         $bar->finish();

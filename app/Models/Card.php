@@ -12,7 +12,7 @@ use Image;
 class Card extends Model
 {
     protected $fillable = [
-        'name', 'content', 'cost', 'picture'
+        'name', 'content', 'cost', 'picture', 'set_id'
     ];
 
     protected $appends = [
@@ -43,7 +43,7 @@ class Card extends Model
         return $this->belongsTo('App\Models\Set');
     }
 
-    public static function add($name, $picture, $content = null, $cost = null, $types = null, $colors = null)
+    public static function add($name, $picture, $set_id, $content = null, $cost = null, $types = null, $colors = null)
     {
         DB::beginTransaction();
         try {
@@ -53,13 +53,15 @@ class Card extends Model
                     'name' => $name,
                     'content' => $content,
                     'cost' => $cost,
-                    'picture' => str_slug($name).'.'.$picture->getClientOriginalExtension()
+                    'picture' => str_slug($name).'.'.$picture->getClientOriginalExtension(),
+                    'set_id' => $set_id
                 ]);
                 $picture->move($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id, $card->picture);
             } else {
                 $card = Card::create([
                     'name' => $name,
-                    'picture' => str_slug($name).'.png'
+                    'picture' => str_slug($name).'.png',
+                    'set_id' => $set_id
                 ]);
                 $cards_storage->makeDirectory($card->id);
                 Image::make($picture)->save($cards_storage->getDriver()->getAdapter()->getPathPrefix().$card->id.DIRECTORY_SEPARATOR.$card->picture);

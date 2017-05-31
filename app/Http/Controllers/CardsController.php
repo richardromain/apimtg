@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Card;
 use App\Models\Color;
+use App\Models\Set;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,8 @@ class CardsController extends Controller
     {
         $types = Type::all();
         $colors = Color::all();
-        return view('cards.create', compact('types', 'colors'));
+        $sets = Set::all();
+        return view('cards.create', compact('types', 'colors', 'sets'));
     }
 
     /**
@@ -40,7 +42,7 @@ class CardsController extends Controller
      */
     public function store(Request $request)
     {
-        Card::add($request->input('name'), $request->file('picture'), $request->input('content'), $request->input('cost'), $request->input('types'), $request->input('colors'));
+        Card::add($request->input('name'), $request->file('picture'), $request->input('set_id'), $request->input('content'), $request->input('cost'), $request->input('types'), $request->input('colors'));
         return redirect(route('cards.index'));
     }
 
@@ -64,7 +66,11 @@ class CardsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $types = Type::all();
+        $colors = Color::all();
+        $sets = Set::all();
+        $card = Card::findOrFail($id);
+        return view('cards.edit', compact('types', 'colors', 'sets', 'card'));
     }
 
     /**
