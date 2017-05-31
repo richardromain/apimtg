@@ -13,9 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::resource('cards', 'Api\CardsController');
+Route::resource('cards', 'Api\CardsController', ['only' => ['index', 'show']]);
 Route::post('cards/search', 'Api\CardsController@search');
