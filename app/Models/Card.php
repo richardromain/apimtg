@@ -29,6 +29,11 @@ class Card extends Model
         return Storage::disk('cards')->url($this->id.'/'.$this->picture);
     }
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = preg_replace( "/\r|\n/", "", $value);
+    }
+
     public function types()
     {
         return $this->belongsToMany('App\Models\Type');
