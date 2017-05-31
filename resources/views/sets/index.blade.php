@@ -9,12 +9,14 @@
                         <tr>
                             <th>#</th>
                             <th>Nom</th>
+                            <th>Url de la liste des cartes</th>
                             <th>Actions</th>
                         </tr>
                         @foreach($sets as $set)
                             <tr>
                                 <td>{{ $set->id }}</td>
                                 <td>{{ $set->name }}</td>
+                                <td><a href="{{ $set->url_cards }}">{{ $set->url_cards }}</a></td>
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
